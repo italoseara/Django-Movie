@@ -1,0 +1,83 @@
+{% extends "home/base.html" %}
+{% load static %}
+
+{% block title %}Início{% endblock %}
+
+{% block content %}
+    <link rel="stylesheet" href="{% static 'css/movie_list.css' %}">
+
+    {% if keep_watching %}
+        <div class="content">
+            <h1 class="row-title">Continuar Assistindo <span>Limpar</span></h1>
+            <div class="row keep-watching">
+            {% for video in keep_watching %}
+                <a href="{{ video.absolute_url }}" class="poster" data-id="{{ video.id }}" data-type="{{ video.class_name }}">
+                    <img draggable="false" src="{{ video.poster.url }}" alt="{{ video.title }}">
+                    <div class="bottom">
+                        {% if video.class_name == "Serie" %}
+                            <p class="title">{{ video.last_episode }}</p>
+                            <p class="timestamp">
+                                {{ video.last_episode.watched_minutes }} de {{ video.last_episode.length_minutes }}min
+                            </p>
+                            <div class="progress" data-watched="{{ video.last_episode.percent_watched }}">
+                                <div class="watched"></div>
+                            </div>
+                        {% else %}
+                            <p class="title">{{ video.title }}</p>
+                            <p class="timestamp">
+                                {{ video.watched_minutes }} de {{ video.length_minutes }}min
+                            </p>
+                            <div class="progress" data-watched="{{ video.percent_watched }}">
+                                <div class="watched"></div>
+                            </div>
+                        {% endif %}
+                    </div>
+                </a>
+            {% endfor %}
+            </div>
+        {% endif %}
+        <i class="fas fa-chevron-right arrow arrow-right"></i>
+        <i class="fas fa-chevron-left arrow arrow-left"></i>
+    </div>
+
+    <div class="content">
+        <h1 class="row-title">Filmes</h1>
+        <div class="row">
+            {% for movie in movie_list %}
+                <a href="{{ movie.absolute_url }}" class="poster" data-id="{{ movie.id }}">
+                    <img draggable="false" src="{{ movie.poster.url }}" alt="{{ movie.title }}">
+                    <div class="bottom">
+                        <p class="title" >{{ movie.title }}</p>
+                        <p class="timestamp">{{ movie.length }}</p>
+                    </div>
+                </a>
+            {% endfor %}
+            <a href="/add/movie" class="new-content">
+                <i class="fas fa-plus add"></i>
+            </a>
+        </div>
+        <i class="fas fa-chevron-right arrow arrow-right"></i>
+        <i class="fas fa-chevron-left arrow arrow-left"></i>
+    </div>
+
+    <div class="content">
+        <h1 class="row-title">Series</h1>
+        <div class="row">
+            {% for serie in serie_list %}
+                <a href="{{ serie.absolute_url }}" class="poster" data-id="{{ serie.id }}">
+                    <img draggable="false" src="{{ serie.poster.url }}" alt="{{ serie.title }}">
+                    <div class="bottom">
+                        <p class="title">{{ serie.title }} ({{ serie.season }} Temporada)</p>
+                        <p class="timestamp">{{ serie.episodes.count }} Episódios</p>
+                    </div>
+                </a>
+            {% endfor %}
+            <a href="/add/serie" class="new-content">
+                <i class="fas fa-plus add"></i>
+            </a>
+        </div>
+        <i class="fas fa-chevron-right arrow arrow-right"></i>
+        <i class="fas fa-chevron-left arrow arrow-left"></i>
+    </div>
+    <script src="{% static 'js/movie_list.js' %}"></script>
+{% endblock %}

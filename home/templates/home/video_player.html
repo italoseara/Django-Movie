@@ -1,0 +1,65 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'css/video_player.css' %}">
+    <title>
+        {% if play.class_name == "Episode" %}
+            {{ play.serie.title }} - 
+        {% endif %}
+        
+        {{ play }}
+    </title>
+</head>
+<body>
+    <div class="video-content">
+        <video data-id={{ play.id }} data-type={{ play.class_name }}>
+            <source src="/api/stream{{ play.video.url }}#t={{ play.watched }}" type="{{ play.mimetype }}">
+            {% if play.subtitles %}
+                <track label="Português" kind="subtitles" srclang="pt" src="{{ play.subtitles.url }}">
+            {% endif %}
+        </video>
+        
+        {% if play.subtitles %}
+            <p id="subtitles"></p>
+        {% endif %}
+        
+        <i class="fas fa-arrow-left" id="back"></i>
+        <div class="hud">
+            <div class="controls">
+                <div class="left-box">
+                    <i class="fas fa-play" id="play-button"></i>
+                    <i class="fas fa-undo-alt" id="backward"></i>
+                    <i class="fas fa-redo-alt" id="foward"></i>
+                    <i class="fas fa-volume-up" id="volume"></i>
+                </div>
+                <p id="title">
+                    {% if play.class_name == "Episode" %}
+                        <strong>{{ play.serie.title }}</strong>
+                    {% endif %}
+                        
+                    {{ play }}
+                </p>
+                <div class="right-box">
+                    <i class="fas fa-closed-captioning" id="captions"></i>
+                    <i class="fas fa-fast-backward" id="previous"></i>
+                    <i class="fas fa-fast-forward" id="next"></i>
+                    <i class="fas fa-expand" id="full-screen"></i>
+                </div>
+            </div>
+            <div id="progress">
+                <div id="length"></div>
+                <div id="downloaded"></div>
+                <div id="watched"></div>
+                <div id="dot"></div>
+            </div>
+            <p id="timestamp">00:00</p>
+        </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="{% static 'js/video_player.js' %}"></script>
+</body>
+</html>

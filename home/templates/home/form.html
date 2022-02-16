@@ -1,0 +1,172 @@
+{% extends 'home/base.html' %}
+{% load static %}
+
+{% block title %}{{ title }}{% endblock %}
+    
+{% block content %}
+    <link rel="stylesheet" href="{% static 'css/loading.css' %}">
+
+    <div class="loading-screen">
+        <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+        <div id="progress">
+            <p id="percentage">0%</p>
+        </div>
+    </div>
+    <center>
+        <h1>{{ title }}</h1>
+        
+        <form action="" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            {{ form.as_p }}
+            
+            {% if is_serie %}
+                <p>
+                    <label for="id_episodes">Episódios:</label>
+                    <input type="file" name="episodes" class="form-control" id="id_episodes" required multiple>
+                </p>
+                <p>
+                    <label for="id_subtitles">Legendas:</label>
+                    <input type="file" name="subtitles" class="form-control" id="id_subtitles" multiple>
+                </p>
+            {% endif %}
+            
+            <input type="submit" value="Adicionar" class="btn btn-success">
+        </form>
+    </center>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        const loading_screen = document.querySelector('.loading-screen');
+        const uploadForm = document.querySelector('form');
+        const submit_button = document.querySelector('input[type="submit"]');
+
+        uploadForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+            submit_button.disabled = true;
+            loading_screen.style.display = 'block';
+            uploadForm.submit();
+        });
+
+        const input_file = document.getElementById('id_episodes') ? 
+                           document.getElementById('id_episodes') : 
+                           document.getElementById('id_video');
+
+        const progress_bar = document.getElementById('progress');
+        const text_progress_bar = document.getElementById('percentage');
+        
+        $("form").submit(function(e){
+            e.preventDefault();
+            $form = $(this)
+            var formData = new FormData(this);
+            const media_data = input_file.files[0];
+            if(media_data != null){
+                console.log(media_data);
+            }
+
+            $.ajax({
+                type: 'POST',
+                url:'',
+                data: formData,
+                dataType: 'json',
+                beforeSend: function(){
+
+                },
+                xhr:function(){
+                    const xhr = new window.XMLHttpRequest();
+                    xhr.upload.addEventListener('progress', e=>{
+                        if(e.lengthComputable){
+                            const percentProgress = (e.loaded/e.total);
+                            progress_bar.style.width = `${percentProgress*99}%`;
+                            text_progress_bar.innerText = `${Math.round(percentProgress*100)}%`;
+                        }
+                    });
+                    return xhr
+                },
+                error: function(err){
+                    console.log(err);
+                },
+                cache: false,
+                contentType: false,
+                processData: false,
+            });
+        });
+    </script>
+
+    <style>
+
+        h1 {
+            color: #E50914;
+            margin-bottom: 1em;
+        }
+
+        form {
+            width: 30%;
+        }
+
+        label {
+            margin: .1em .2em;
+
+            color: #fff;
+
+            float: left;
+        }
+
+        .btn-success {
+            margin-top: 2em;
+        }
+
+        .errorlist {
+            color: #E50914;
+        }
+
+        .loading-screen {
+            position: fixed;
+            display: none;
+
+            top: 0;
+            left: 0;
+
+            width: 100%;
+            height: 100%;
+
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .lds-ring {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        #progress {
+            position: absolute;
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            width: 0;
+            height: .7em;
+
+            bottom: 1em;
+            left: .5%;
+           
+            background-color: #E50914;
+            border-radius: .5em;
+
+            transition: width .5s;
+        }
+
+        #percentage {
+            color: #fff;
+            font-weight: bold;
+            font-family: Arial, Helvetica, sans-serif;
+
+            user-select: none;
+        }
+    </style>
+
+{% endblock %}
+    

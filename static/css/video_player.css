@@ -1,0 +1,202 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+video {
+    position: absolute;
+
+    width:100%;
+    height:100%;
+
+    overflow: hidden;
+}
+
+#subtitles {
+    position: absolute;
+
+    bottom: 1em;
+
+    width: 100%;
+    
+    color: #fff;
+    background-color: transparent;
+    
+    font-family: sans-serif;
+    font-weight: bold;
+    font-size: 36px;
+    
+    text-align: center;
+    text-shadow: 2px 2px 8px #000;
+
+    transition: all .1s;
+
+    user-select: none;
+}
+
+.hidden {
+    opacity: 0;
+}
+
+.hide-cursor {
+    cursor: none;
+}
+
+.video-content {
+    display: flex;
+    align-items: center;
+
+    height:100vh;
+    
+    background-color: #000;
+}
+
+.hud {
+    position: absolute;
+    display: flex;
+
+    align-items: center;
+
+    bottom: 0;
+    left: 0;
+
+    width: 100%;
+    height: 6em;
+
+    user-select: none;
+}
+
+.controls {
+    position: relative;
+    display: flex;
+
+    width: 100%;
+    height: 100%;
+
+    user-select: none;
+}
+
+.left-box, .right-box {
+    position: relative;
+    display: flex;
+
+    width: 50%;
+    height: 100%;
+
+    align-items: center;
+
+    user-select: none;
+}
+
+.right-box i { margin: .3em .5em 0 0; }
+.left-box i { margin: .4em 0 0 .5em; }
+
+.left-box { justify-content: flex-start; }
+.right-box { justify-content: flex-end; }
+
+.fas {
+    font-size: 2em;
+
+    color: #fff;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.fas:hover {
+    color: #E50914;
+    transition: all 0.2s;
+}
+
+#title {
+    position: absolute;
+    
+    top: 1.5em;
+    left: 50%;
+    
+    color: #fff;
+    
+    font-size: 1.3em;
+    font-family: Arial, Helvetica, sans-serif;
+
+    transform: translateX(-50%);
+}
+
+#back {
+    position: absolute;
+
+    top: .6em;
+    left: .6em;
+}
+
+#progress {
+    position: absolute;
+    display: flex;
+
+    align-items: center;
+
+    top: 0;
+    left: .5%;
+
+    width: 94.5%;
+    height: .8em;
+
+    transition: all .1s ease-out;
+
+    cursor: pointer;
+}
+
+#progress:hover #length, 
+#progress:hover #watched, 
+#progress:hover #downloaded {
+    height: 50%;
+    transition: all .1s ease-out;
+}
+
+#timestamp {
+    position: absolute;
+    text-align: center;
+
+    width: 4%;
+
+    top: -.3em;
+    right: .5em;
+
+    color: #fff;
+
+    font-size: 1vw;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+#length, #watched, #downloaded {
+    position: absolute;
+    height: 30%;
+    transition: all .1s ease-out;
+}
+
+#dot {
+    position: absolute;
+
+    height: .9em;
+    width: .9em;
+
+    background-color: #E50914;
+    border-radius: 50%;
+
+    translate: translate(-50%, -50%);
+    transition: all .1s ease-out;
+}
+
+#length {
+    width: 100%;
+    background-color: #7e7e7e;
+}
+
+#watched {
+    width: 0;
+    background-color: #E50914;
+}
+
+#downloaded {
+    width: 0;
+    background-color: #d3d3d3;
+}
